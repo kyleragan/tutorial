@@ -96,4 +96,51 @@ describe UsersController do
 			end
 		end
 	end
+	
+	describe "GET 'edit'" do
+		
+		before(:each) do
+			@user = Factory(:user)
+			test_sign_in(@user)
+		end
+		
+		it "should be successful" do
+			get :edit, :id => @user
+			response.should be_success
+		end
+		
+		it "should have the right title" do
+			get :edit, :id => @user
+			response.should have_selector("title", :content => "Edit User")
+		end
+		
+		it "should have a link to change the Gravatar" do
+			get :edit, :id => @user
+			gravatar_url = "http://gravatar.com/emails"
+			response.should have_selector("a", :href => gravatar_url, :content => "Change")
+		end
+				
+	end
+	
+	describe "PUT 'update'" do
+		
+		before(:each) do
+			@user = Factory(:user)
+			test_sign_in(@user)
+		end
+		
+		describe "failure" do
+			it "should render the edit page"
+			it "should have the right title"
+			it "should have a flash message"
+		end
+		
+		describe "success" do
+			it "should change the user's attributes"
+			it "should redirect to the user show page"
+			it "should have a flash message"
+		end
+		
+	end
+	
 end

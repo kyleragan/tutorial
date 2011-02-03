@@ -22,4 +22,10 @@ class UsersController < ApplicationController
 		end
 	end
 	
+	def edit
+		@user = User.find(params[:id])
+		@title = "Edit User"
+	end
+	
+	
 end
