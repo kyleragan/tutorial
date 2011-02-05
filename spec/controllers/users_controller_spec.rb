@@ -130,15 +130,50 @@ describe UsersController do
 		end
 		
 		describe "failure" do
-			it "should render the edit page"
-			it "should have the right title"
-			it "should have a flash message"
+			
+			before(:each) do
+				@attr = { :email			=>	"",
+									:name				=> 	"",
+									:password		=>	"",
+									:password_confirmation	=> "" }
+			end
+			
+			it "should render the edit page" do
+				put :update, :id => @user, :user => @attr
+				response.should render_template('edit')
+			end
+			
+			it "should have the right title" do
+				put :update, :id => @user, :user => @attr
+				response.should have_selector("title", :content => "Edit User")
+			end
+			
 		end
 		
 		describe "success" do
-			it "should change the user's attributes"
-			it "should redirect to the user show page"
-			it "should have a flash message"
+			
+			before(:each) do
+				@attr = { :name => "New Name", :email => "user@example.org",
+                  :password => "barbaz", :password_confirmation => "barbaz" }
+			end
+			
+			it "should change the user's attributes" do
+				put :update, :id => @user, :user => @attr
+				@user.reload
+				@user.name.should == @attr[:name]
+				@user.email.should == @attr[:email]
+			end
+			
+			it "should redirect to the user show page" do
+				put :update, :id => @user, :user => @attr
+				response.should redirect_to(user_path(@user))
+			end
+			
+			it "should have a flash message" do
+				put :update, :id => @user, :user => @attr
+				flash[:success].should =~ /updated/i
+			end
+			
 		end
 		
 	end
